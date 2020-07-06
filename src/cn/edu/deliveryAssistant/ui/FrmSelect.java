@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JLayeredPane;
@@ -18,6 +19,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.JMenuBar;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.CardLayout;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -25,70 +27,59 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import net.miginfocom.swing.MigLayout;
 import java.awt.FlowLayout;
+import javax.swing.JLabel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-
-public class FrmSelect {
+public class FrmSelect extends JFrame implements ActionListener{
 
 	private JFrame frame;
-
+	private JButton manager;
+	private JButton user;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrmSelect window = new FrmSelect();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		FrmSelect window = new FrmSelect();
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public FrmSelect() {
-		initialize();
+		setBounds(100, 100, 450, 312);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.setLocation(500,300);
+		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		
+		manager = new JButton("管理员");
+		manager.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				dispose();
+				new FrmManagerLogin();
+			}
+		});
+		getContentPane().add(manager);
+		
+		user = new JButton("用户");
+		user.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				new FrmUserLogin();
+			}
+		});
+		getContentPane().add(user);
+		
+		this.setVisible(true);
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 312);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new MigLayout("", "[grow][grow]", "[grow][grow]"));
-		
-		JPanel panel_2 = new JPanel();
-		frame.getContentPane().add(panel_2, "cell 0 0,grow");
-		panel_2.setLayout(new BorderLayout(0, 0));
-		
-		JButton button = new JButton("\u7BA1\u7406\u5458");
-		panel_2.add(button, BorderLayout.CENTER);
-		
-		JPanel panel_3 = new JPanel();
-		frame.getContentPane().add(panel_3, "cell 1 0,grow");
-		panel_3.setLayout(new BorderLayout(0, 0));
-		
-		JButton button_1 = new JButton("\u7528\u6237");
-		panel_3.add(button_1, BorderLayout.CENTER);
-		
-		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1, "cell 0 1,grow");
-		panel_1.setLayout(new BorderLayout(0, 0));
-		
-		JButton button_2 = new JButton("\u5546\u5BB6");
-		panel_1.add(button_2, BorderLayout.CENTER);
-		
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, "cell 1 1,grow");
-		panel.setLayout(new BorderLayout(0, 0));
-		
-		JButton button_3 = new JButton("\u9A91\u624B");
-		panel.add(button_3, BorderLayout.CENTER);
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
 	}
 }

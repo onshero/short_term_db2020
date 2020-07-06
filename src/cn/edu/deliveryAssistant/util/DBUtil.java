@@ -3,7 +3,7 @@ package cn.edu.deliveryAssistant.util;
 import java.sql.Connection;
 
 public class DBUtil {
-	private static final String jdbcUrl="jdbc:mysql://localhost:3306/short_term?serverTimezone=UTC";
+	private static final String jdbcUrl="jdbc:mysql://localhost:3306/short_term_db2020?serverTimezone=UTC";
 	private static final String dbUser="root";
 	private static final String dbPwd="weijie";
 	static{
