@@ -3,6 +3,7 @@ package cn.edu.deliveryAssistant.model;
 import java.sql.Date;
 
 public class BeanUser {
+	public static BeanUser currentLoginUser=null;
 	private int user_id;
 	private String user_name;
 	private boolean user_sex;

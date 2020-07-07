@@ -7,6 +7,7 @@ public class BeanMerchandise {
 	private String mercandise_name;
 	private double unit_price;
 	private double discount_unit_price;
+	private int remain;
 	public int getMerchandise_id() {
 		return merchandise_id;
 	}
@@ -43,5 +44,12 @@ public class BeanMerchandise {
 	public void setDiscount_unit_price(double discount_unit_price) {
 		this.discount_unit_price = discount_unit_price;
 	}
+	public int getRemain() {
+		return remain;
+	}
+	public void setRemain(int remain) {
+		this.remain = remain;
+	}
+	
 	
 }

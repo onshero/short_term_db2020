@@ -9,6 +9,7 @@ public class BeanAddress {
 	private String address;
 	private String contact_person;
 	private String phone_num;
+	private boolean used;
 	public int getAddress_id() {
 		return address_id;
 	}
@@ -57,6 +58,11 @@ public class BeanAddress {
 	public void setPhone_num(String phone_num) {
 		this.phone_num = phone_num;
 	}
+	public boolean isUsed() {
+		return used;
+	}
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
 	
-
 }

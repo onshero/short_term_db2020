@@ -29,9 +29,9 @@ public class FrmUserLogin extends JFrame{
 	public FrmUserLogin() {
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setLayout(null);
+		getContentPane().setLayout(null);
 		this.setLocation(500,300);
-		Label = new JLabel("ÓÃ»§Ãû");
+		Label = new JLabel("\u624B\u673A\u53F7");
 		Label.setBounds(92, 55, 72, 18);
 		this.getContentPane().add(Label);
 		

@@ -1,6 +1,7 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanManager {
+	public static BeanUser currentLoginManager=null;
 	private int manager_id;
 	private String manager_name;
 	private String manager_password;
