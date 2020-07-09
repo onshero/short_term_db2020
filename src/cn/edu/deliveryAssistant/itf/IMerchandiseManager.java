@@ -5,7 +5,10 @@ import java.util.List;
 import cn.edu.deliveryAssistant.model.BeanMerchandise;
 import cn.edu.deliveryAssistant.model.BeanMerchandiseClassify;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
+import cn.edu.deliveryAssistant.model.BeanOrder;
+import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.model.MerchandiseEvaluate;
+import cn.edu.deliveryAssistant.model.MerchandiseOrder;
 import cn.edu.deliveryAssistant.util.BaseException;
 
 public interface IMerchandiseManager {
@@ -32,6 +35,7 @@ public interface IMerchandiseManager {
 	//显示评价
 	public List<MerchandiseEvaluate> loadEvaluation(BeanMerchandise merchandise) throws BaseException;
 	
-	
+	//用户评价
+	public MerchandiseEvaluate userEvaluate(MerchandiseOrder merchandiseOrder) throws BaseException;
 
 }

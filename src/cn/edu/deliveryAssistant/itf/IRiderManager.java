@@ -3,6 +3,8 @@ package cn.edu.deliveryAssistant.itf;
 import java.util.List;
 
 import cn.edu.deliveryAssistant.model.BeanRider;
+import cn.edu.deliveryAssistant.model.MerchandiseEvaluate;
+import cn.edu.deliveryAssistant.model.RiderReceive;
 import cn.edu.deliveryAssistant.util.BaseException;
 
 public interface IRiderManager {
@@ -18,6 +20,9 @@ public interface IRiderManager {
 	//骑手的评价
 	public List<String> load(BeanRider rider) throws BaseException;
 	
+	//用户评价
+	public RiderReceive userEvaluate(MerchandiseEvaluate merchandiseEvaluate) throws BaseException;
+	
 	//骑手接单数
 	public int countOrdre(BeanRider rider) throws BaseException;
 	
@@ -29,5 +34,6 @@ public interface IRiderManager {
 	
 	//删除骑手
 	public void deleteRider(BeanRider rider) throws BaseException;
+	
 
 }

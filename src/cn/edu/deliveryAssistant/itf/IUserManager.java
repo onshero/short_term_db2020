@@ -8,7 +8,7 @@ import cn.edu.deliveryAssistant.util.BaseException;
 public interface IUserManager {
 	
 	//×¢²á
-	public BeanUser reg(String name, boolean sex, String pwd1, String pwd2, String phone_num, String email, String city) throws BaseException;
+	public BeanUser reg(String name, String sex, String pwd1, String pwd2, String phone_num, String email, String city) throws BaseException;
 	
 	//µÇÂ¼
 	public BeanUser login(String phone_num,String pwd)throws BaseException;

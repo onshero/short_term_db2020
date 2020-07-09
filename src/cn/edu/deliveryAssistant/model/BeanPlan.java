@@ -1,10 +1,18 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanPlan {
+	private int merchant_id;
 	private int plan_id;
 	private double reduce_amount;
 	private double plan_discount_amount;
 	private boolean used_with_coupon;
+	
+	public int getMerchant_id() {
+		return merchant_id;
+	}
+	public void setMerchant_id(int merchant_id) {
+		this.merchant_id = merchant_id;
+	}
 	public int getPlan_id() {
 		return plan_id;
 	}
