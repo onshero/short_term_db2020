@@ -1,6 +1,7 @@
 package cn.edu.deliveryAssistant.itf;
 
 import java.sql.Date;
+import java.util.List;
 
 import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
@@ -16,13 +17,19 @@ public interface IUserManager {
 	//修改密码
 	public void changePwd(BeanUser user, String oldPwd,String newPwd, String newPwd2)throws BaseException;
 	
-	//显示个人信息;
-	public BeanUser show(BeanUser user) throws BaseException;
+	//显示所有用户
+	public List<BeanUser> loadAll() throws BaseException;
 	
-	//购买/续费会员
-	public BeanUser VIP(boolean isVIP,Date VIP_end_date,double money);
+	/*
+	 * 	购买/续费会员
+	 * 	设定10元/月（一个月30天）
+	 * 	不满十元不能购买会员
+	 */
+	public BeanUser VIP(BeanUser user,double money) throws BaseException;
 	
 	//删除用户
 	public void deleteUser(BeanUser user) throws BaseException;
+	
+	
 
 }

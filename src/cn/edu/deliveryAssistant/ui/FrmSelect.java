@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JLayeredPane;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+
 import java.awt.BorderLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSpinner;
@@ -35,9 +37,8 @@ import javax.swing.JTextPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class FrmSelect extends JFrame implements ActionListener{
+public class FrmSelect extends JFrame{
 
-	private JFrame frame;
 	private JButton manager;
 	private JButton user;
 	/**
@@ -79,7 +80,4 @@ public class FrmSelect extends JFrame implements ActionListener{
 		this.setVisible(true);
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	}
 }

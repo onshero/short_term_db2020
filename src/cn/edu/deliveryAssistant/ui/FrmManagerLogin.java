@@ -7,9 +7,16 @@ import java.awt.BorderLayout;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import cn.edu.deliveryAssistant.UserUtil;
+import cn.edu.deliveryAssistant.model.BeanUser;
+import cn.edu.deliveryAssistant.util.BaseException;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FrmManagerLogin extends JFrame{
 	private JTextField textField;
@@ -53,6 +60,20 @@ public class FrmManagerLogin extends JFrame{
 		getContentPane().add(passwordField);
 		
 		button = new JButton("µÇÂ¼");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String manager_name=textField.getText();
+				String pwd=new String(passwordField.getPassword());
+				try {
+					//BeanUser.currentLoginUser = UserUtil.userManager.login(phone_num, pwd);
+				} catch (BaseException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				dispose();
+			}
+		});
 		button.setBounds(102, 162, 95, 25);
 		getContentPane().add(button);
 		
