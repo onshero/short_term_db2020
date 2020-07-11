@@ -289,12 +289,117 @@ public class MerchandiseManager implements IMerchandiseManager {
 	public BeanMerchandise addMerchandise(BeanMerchant merchant, BeanMerchandiseClassify classify, String name,
 			double unit_price, double discount_unit_price, int remain) throws BaseException {
 		// TODO Auto-generated method stub
-		return null;
+		if(name==null||"".equals(name)) throw new BusinessException("商品名不能为空");
+		if(unit_price<0) throw new BusinessException("单价不能少于0");
+		if(discount_unit_price<0) throw new BusinessException("优惠价格不能少于0");
+		if(remain<0) throw new BusinessException("余量不能少于0");
+		BeanMerchandise merchandise=new BeanMerchandise();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT merchandise_id,remain FROM merchandise\r\n" + 
+					"	WHERE merchant_id=? AND classify_id=? AND merchandise_name=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, merchant.getMerchant_id());
+			pst.setInt(2, classify.getClassify_id());
+			pst.setString(3, name);
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next()) {
+				int dise_id=rs.getInt(1);
+				int r=rs.getInt(2);
+				rs.close();
+				pst.close();
+				sql="UPDATE merchandise SET unit_price=?,discount_unit_price=?,remain=remain+? \r\n" + 
+						"	WHERE merchandise_id=? AND merchant_id=? AND classify_id=?";
+				pst=conn.prepareStatement(sql);
+				pst.setDouble(1, unit_price);
+				pst.setDouble(2, discount_unit_price);
+				pst.setInt(3, remain);
+				pst.setInt(4, dise_id);
+				pst.setInt(5, merchant.getMerchant_id());
+				pst.setInt(6, classify.getClassify_id());
+				pst.executeUpdate();
+				merchandise.setMerchandise_id(dise_id);
+				merchandise.setClassify_id(classify.getClassify_id());
+				merchandise.setMerchant_id(merchant.getMerchant_id());
+				merchandise.setMercandise_name(name);
+				merchandise.setUnit_price(unit_price);
+				merchandise.setDiscount_unit_price(discount_unit_price);
+				merchandise.setRemain(r+remain);
+			}else {
+				rs.close();
+				pst.close();
+				sql="SELECT max(merchandise_id) FROM merchandise\r\n" + 
+						"	WHERE merchant_id=? AND classify_id=?";
+				pst=conn.prepareStatement(sql);
+				pst.setInt(1, merchant.getMerchant_id());
+				pst.setInt(2, classify.getClassify_id());
+				rs=pst.executeQuery();
+				int dise_id=0;
+				if(rs.next()) dise_id=rs.getInt(1)+1;
+				else dise_id=1;
+				rs.close();
+				pst.close();
+				sql="INSERT INTO merchandise VALUES(?,?,?,?,?,?,?)";
+				pst.setInt(1, dise_id);
+				pst.setInt(2, classify.getClassify_id());
+				pst.setInt(3, merchant.getMerchant_id());
+				pst.setString(4, name);
+				pst.setDouble(5, unit_price);
+				pst.setDouble(6, discount_unit_price);
+				pst.setInt(7, remain);
+				pst.executeUpdate();
+				merchandise.setMerchandise_id(dise_id);
+				merchandise.setClassify_id(classify.getClassify_id());
+				merchandise.setMerchant_id(merchant.getMerchant_id());
+				merchandise.setMercandise_name(name);
+				merchandise.setUnit_price(unit_price);
+				merchandise.setDiscount_unit_price(discount_unit_price);
+				merchandise.setRemain(remain);
+			}
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return merchandise;
 	}
 
 	@Override
 	public void deleteMerchandise(BeanMerchandise merchandise) throws BaseException {
 		// TODO Auto-generated method stub
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="delete from merchandise where merchandise_id=? AND merchant_id=? AND classify_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, merchandise.getMerchandise_id());
+			pst.setInt(2, merchandise.getMerchant_id());
+			pst.setInt(3, merchandise.getClassify_id());
+			pst.executeUpdate();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 
 	}
 
