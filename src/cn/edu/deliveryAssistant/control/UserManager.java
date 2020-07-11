@@ -101,7 +101,7 @@ public class UserManager implements IUserManager {
 			pst.setString(1, phone_num);
 			rs=pst.executeQuery();
 			rs.next();
-			if(!pwd.equals(rs.getString(3))) throw new BusinessException("ÃÜÂë´íÎó");
+			if(!pwd.equals(rs.getString(4))) throw new BusinessException("ÃÜÂë´íÎó");
 			user.setUser_id(rs.getInt(1));
 			user.setUser_name(rs.getString(2));
 			user.setUser_sex(rs.getString(3));

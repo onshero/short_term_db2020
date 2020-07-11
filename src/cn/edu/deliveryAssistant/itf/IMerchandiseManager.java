@@ -17,7 +17,7 @@ public interface IMerchandiseManager {
 	
 	public List<BeanMerchandise> load(BeanMerchant merchant) throws BaseException;
 	
-	public List<BeanMerchandise> load(BeanMerchant merchant, BeanMerchandiseClassify classify) throws BaseException;
+	public List<BeanMerchandise> load(BeanMerchandiseClassify classify) throws BaseException;
 	
 	//≤È—Ø…Ã∆∑
 	public BeanMerchandise search(String merchandise_name) throws BaseException;

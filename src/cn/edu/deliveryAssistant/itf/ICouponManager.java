@@ -39,6 +39,6 @@ public interface ICouponManager {
 	//É¾³ýÓÅ»ÝÈ¯
 	public void deleteCoupon(BeanMerchant merchant,BeanCoupon coupon) throws BaseException;
 	
-	public void deleteCoupon(CouponGot cGot) throws BaseException;
+	public void deleteCoupon(CouponGot cGot,int num) throws BaseException;
 
 }

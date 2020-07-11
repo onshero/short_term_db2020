@@ -63,6 +63,8 @@ public class FrmUserLogin extends JFrame{
 				String pwd=new String(passwordField.getPassword());
 				try {
 					BeanUser.currentLoginUser = UserUtil.userManager.login(phone_num, pwd);
+					dispose();
+					new FrmUserMain().setVisible(true);;
 				} catch (BaseException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 					return;
