@@ -19,6 +19,9 @@ public interface ICouponManager {
 	//显示用户得到的优惠券
 	public List<CouponGot> loadUserGot(BeanUser user) throws BaseException;
 	
+	//显示用户在该商家能用的优惠券
+	public List<CouponGot> loadUserGot(BeanUser user,BeanMerchant merchant) throws BaseException;
+	
 	//显示用户正在集单的优惠券
 	public List<CouponReqOrder> loadUserGting(BeanUser user) throws BaseException;
 	
