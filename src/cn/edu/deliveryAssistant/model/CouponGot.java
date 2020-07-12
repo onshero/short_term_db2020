@@ -3,6 +3,8 @@ package cn.edu.deliveryAssistant.model;
 import java.sql.Date;
 
 public class CouponGot {
+	public static final String[] titles= {"优惠金额","数量","最后期限"};
+	
 	private int user_id;
 	private int coupon_id;
 	private int merchant_id;
@@ -45,6 +47,11 @@ public class CouponGot {
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return ""+this.discount_amount;
+		else if(col==1) return ""+this.got_num;
+		else if(col==2) return this.end_date.toString();
+		else return "";
+	}
 
 }

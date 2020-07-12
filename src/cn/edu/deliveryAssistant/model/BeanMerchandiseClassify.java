@@ -1,6 +1,8 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanMerchandiseClassify {
+	public static final String[] titles= {"类名","商品数"};
+	
 	private int classify_id;
 	private int merchant_id;
 	private String classify_name;
@@ -29,6 +31,10 @@ public class BeanMerchandiseClassify {
 	public void setMerchandise_number(int merchandise_number) {
 		this.merchandise_number = merchandise_number;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return this.classify_name;
+		else if(col==1) return ""+this.merchandise_number;
+		else return "";
+	}
 
 }

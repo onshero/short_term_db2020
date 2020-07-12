@@ -4,6 +4,8 @@ import java.sql.Date;
 
 public class BeanUser {
 	public static BeanUser currentLoginUser=null;
+	public static final String[] titles= {"姓名","性别","手机号","邮箱","所在城市","注册时间","会员到期时间"};
+	
 	private int user_id;
 	private String user_name;
 	private String user_sex;
@@ -74,5 +76,14 @@ public class BeanUser {
 	public void setVIP_end_date(Date vIP_end_date) {
 		VIP_end_date = vIP_end_date;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return this.user_name;
+		else if(col==1) return this.user_sex;
+		else if(col==2) return this.user_phone_num;
+		else if(col==3) return this.user_email;
+		else if(col==4) return this.user_city;
+		else if(col==5) return this.registration_date.toString();
+		else if(col==6) return this.VIP_end_date.toString();
+		else return "";
+	}
 }

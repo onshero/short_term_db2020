@@ -1,6 +1,8 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanAddress {
+	public static final String[] titles= {"序号","省","市","区","地址","联系人","联系电话","默认"};
+	
 	private int address_id;
 	private int user_id;
 	private String province;
@@ -65,4 +67,15 @@ public class BeanAddress {
 		this.used = used;
 	}
 	
+	public String getCell(int col){
+		if(col==0) return ""+this.address_id;
+		else if(col==1) return this.province;
+		else if(col==2) return this.city;
+		else if(col==3) return this.area;
+		else if(col==4) return this.address;
+		else if(col==5) return this.contact_person;
+		else if(col==6) return this.phone_num;
+		else if(col==7) return used?"USING":"";
+		else return "";
+	}
 }

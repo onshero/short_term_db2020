@@ -1,6 +1,8 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanMerchandise {
+	public static final String[] titles= {"商品名称","单价","优惠价格","余量"};
+	
 	private int merchandise_id;
 	private int classify_id;
 	private int merchant_id;
@@ -51,5 +53,11 @@ public class BeanMerchandise {
 		this.remain = remain;
 	}
 	
-	
+	public String getCell(int col){
+		if(col==0) return this.mercandise_name;
+		else if(col==1) return ""+this.unit_price;
+		else if(col==2) return ""+this.discount_unit_price;
+		else if(col==3) return ""+this.remain;
+		else return "";
+	}
 }

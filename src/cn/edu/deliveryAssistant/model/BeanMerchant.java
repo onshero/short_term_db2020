@@ -1,6 +1,8 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanMerchant {
+	public static final String[] titles= {"商家","星级","人均消费","总销量"};
+	
 	private int merchant_id;
 	private String merchant_name;
 	private double merchant_star;
@@ -36,5 +38,11 @@ public class BeanMerchant {
 	public void setTotal_sale(int total_sale) {
 		this.total_sale = total_sale;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return this.merchant_name;
+		else if(col==1) return ""+this.merchant_star;
+		else if(col==2) return ""+this.consumption_per_person;
+		else if(col==3) return ""+this.total_sale;
+		else return "";
+	}
 }

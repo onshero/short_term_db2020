@@ -3,6 +3,8 @@ package cn.edu.deliveryAssistant.model;
 import java.sql.Date;
 
 public class BeanRider {
+	public static final String[] titles= {"序号","骑手姓名","注册时间","身份"};
+	
 	private int rider_id;
 	private String rider_name;
 	private Date date_on_board;
@@ -31,6 +33,12 @@ public class BeanRider {
 	public void setRider_status(String rider_status) {
 		this.rider_status = rider_status;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return ""+this.rider_id;
+		else if(col==1) return this.rider_name;
+		else if(col==2) return this.date_on_board.toString();
+		else if(col==3) return this.rider_status;
+		else return "";
+	}
 
 }

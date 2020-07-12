@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import javax.imageio.*;
 
 public class MerchandiseEvaluate {
+	public static final String[] titles= {"ÆÀÂÛÄÚÈİ","ĞÇ¼¶","Í¼Æ¬"};
+	
 	private int merchandise_id;
 	private int merchant_id;
 	private int user_id;
@@ -47,6 +49,11 @@ public class MerchandiseEvaluate {
 	public void setImage(BufferedImage image) {
 		this.image = image;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return ""+this.evaluate_content;
+		else if(col==1) return ""+this.order_stars;
+		else if(col==2) return ""+this.image;
+		else return "";
+	}
 
 }

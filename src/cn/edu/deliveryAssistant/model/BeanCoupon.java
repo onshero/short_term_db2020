@@ -3,6 +3,8 @@ package cn.edu.deliveryAssistant.model;
 import java.sql.Date;
 
 public class BeanCoupon {
+	public static final String[] titles= {"编号","优惠金额","集单要求数","起始日期","结束日期"};
+	
 	private int coupon_id;
 	private int merchant_id;
 	private double discount_amount;
@@ -45,5 +47,12 @@ public class BeanCoupon {
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return ""+this.coupon_id;
+		else if(col==1) return ""+this.discount_amount;
+		else if(col==2) return ""+this.order_req_num;
+		else if(col==3) return this.start_date.toString();
+		else if(col==4) return this.end_date.toString();
+		else return "";
+	}
 }

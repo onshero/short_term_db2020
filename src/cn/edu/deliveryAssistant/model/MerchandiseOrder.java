@@ -3,6 +3,8 @@ package cn.edu.deliveryAssistant.model;
 import java.sql.Date;
 
 public class MerchandiseOrder {
+	public static final String[] titles= {"原始金额","结算金额","下单时间","送达时间","订单状态"};
+	
 	private int order_id;
 	private int merchant_id;
 	private int merchandise_id;
@@ -95,5 +97,13 @@ public class MerchandiseOrder {
 		this.order_status = order_status;
 	}
 	
+	public String getCell(int col){
+		if(col==0) return ""+this.origin_price;
+		else if(col==1) return ""+this.final_price;
+		else if(col==2) return this.order_date.toString();
+		else if(col==3) return ""+this.req_delivery_date.toString();
+		else if(col==4) return this.order_status;
+		else return "";
+	}
 
 }

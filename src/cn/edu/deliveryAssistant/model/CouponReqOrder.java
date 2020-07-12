@@ -1,6 +1,8 @@
 package cn.edu.deliveryAssistant.model;
 
 public class CouponReqOrder {
+	public static final String[] titles= {"集单要求数","已订单数"};
+	
 	private int user_id;
 	private int merchant_id;
 	private int coupon_id;
@@ -36,6 +38,10 @@ public class CouponReqOrder {
 	public void setFinished_order_num(int finished_order_num) {
 		this.finished_order_num = finished_order_num;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return ""+this.order_req_num;
+		else if(col==1) return ""+this.finished_order_num;
+		else return "";
+	}
 
 }

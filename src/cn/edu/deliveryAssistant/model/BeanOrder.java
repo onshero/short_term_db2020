@@ -1,6 +1,8 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanOrder {
+	public static final String[] titles= {"数量","总价","单品优惠价格"};
+	
 	private int order_id;
 	private int merchandise_id;
 	private int classify_id;
@@ -59,4 +61,10 @@ public class BeanOrder {
 		this.discount_unit_price = discount_unit_price;
 	}
 	
+	public String getCell(int col){
+		if(col==0) return ""+this.count;
+		else if(col==1) return ""+this.total_price;
+		else if(col==2) return ""+this.discount_unit_price;
+		else return "";
+	}
 }

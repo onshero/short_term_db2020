@@ -1,6 +1,8 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanPlan {
+	public static final String[] titles= {"序号","满减金额","优惠金额","是否可与优惠券叠加"};
+	
 	private int merchant_id;
 	private int plan_id;
 	private double reduce_amount;
@@ -37,5 +39,11 @@ public class BeanPlan {
 	public void setUsed_with_coupon(boolean used_with_coupon) {
 		this.used_with_coupon = used_with_coupon;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return ""+this.plan_id;
+		else if(col==1) return ""+this.reduce_amount;
+		else if(col==2) return ""+this.plan_discount_amount;
+		else if(col==3) return used_with_coupon?"YES":"NO";
+		else return "";
+	}
 }

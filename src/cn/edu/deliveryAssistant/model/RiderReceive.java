@@ -3,6 +3,8 @@ package cn.edu.deliveryAssistant.model;
 import java.sql.Date;
 
 public class RiderReceive {
+	public static final String[] titles= {"时间","用户评价","单笔收入"};
+	
 	private int order_id;
 	private int rider_id;
 	private Date order_date;
@@ -38,6 +40,11 @@ public class RiderReceive {
 	public void setSingle_income(double single_income) {
 		this.single_income = single_income;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return this.order_date.toString();
+		else if(col==1) return this.user_evaluate;
+		else if(col==2) return ""+this.single_income;
+		else return "";
+	}
 
 }
