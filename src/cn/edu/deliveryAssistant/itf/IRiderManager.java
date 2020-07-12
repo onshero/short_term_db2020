@@ -12,12 +12,12 @@ public interface IRiderManager {
 	public List<BeanRider> loadAll() throws BaseException;
 	
 	//精准查找某骑手
-	public BeanRider search(BeanRider rider) throws BaseException;
+	//public BeanRider search(BeanRider rider) throws BaseException;
 	
 	//模糊查找某骑手
 	public List<BeanRider> search(String rider_name) throws BaseException;
 	
-	//骑手的评价
+	//对骑手的评价
 	public List<String> load(BeanRider rider) throws BaseException;
 	
 	//用户评价
@@ -30,7 +30,7 @@ public interface IRiderManager {
 	public double sumMoney(BeanRider rider) throws BaseException;
 	
 	//添加骑手
-	public BeanRider addRider(String rider_name) throws BaseException;
+	public BeanRider addRider(String rider_name, String status) throws BaseException;
 	
 	//删除骑手
 	public void deleteRider(BeanRider rider) throws BaseException;

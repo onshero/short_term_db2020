@@ -22,7 +22,7 @@ public interface IOrderManager {
 	public List<MerchandiseOrder> load(BeanUser user, String status) throws BaseException;
 	
 	//Ìí¼Ó¶©µ¥
-	public BeanOrder addOrder(BeanMerchandise merchandise, int num, double price, double discount_unit_price) throws BaseException;
+	public BeanOrder addOrder(BeanMerchandise merchandise, int num) throws BaseException;
 	
 	public MerchandiseOrder addtotalOrder(BeanUser user,BeanMerchant merchant,BeanRider rider,BeanOrder order) throws  BaseException;
 	
