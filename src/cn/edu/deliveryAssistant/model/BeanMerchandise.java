@@ -2,6 +2,7 @@ package cn.edu.deliveryAssistant.model;
 
 public class BeanMerchandise {
 	public static final String[] titles= {"商品名称","单价","优惠价格","余量"};
+	public static BeanMerchandise curmerchandise=null;
 	
 	private int merchandise_id;
 	private int classify_id;

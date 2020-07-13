@@ -6,6 +6,9 @@ import cn.edu.deliveryAssistant.model.BeanManager;
 import cn.edu.deliveryAssistant.util.BaseException;
 
 public interface IManagerManager {
+	//登录
+	public BeanManager login(String name, String pwd) throws BaseException;
+	
 	//显示管理员
 	public List<BeanManager> loadAll() throws BaseException;
 	

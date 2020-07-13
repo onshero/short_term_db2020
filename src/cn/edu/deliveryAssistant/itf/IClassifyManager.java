@@ -12,6 +12,8 @@ public interface IClassifyManager {
 	
 	public List<BeanMerchandiseClassify> loadAll(BeanMerchant merchant) throws BaseException;
 	
+	public List<BeanMerchandiseClassify> loadAll(int merchant_id) throws BaseException;
+	
 	//Ìí¼ÓÀà±ð
 	public BeanMerchandiseClassify addClassify(BeanMerchant merchant,String classify_name) throws BaseException;
 	

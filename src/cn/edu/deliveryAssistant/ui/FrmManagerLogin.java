@@ -8,7 +8,9 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
+import cn.edu.deliveryAssistant.ManagerUtil;
 import cn.edu.deliveryAssistant.UserUtil;
+import cn.edu.deliveryAssistant.model.BeanManager;
 import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
 
@@ -67,6 +69,7 @@ public class FrmManagerLogin extends JFrame{
 				String pwd=new String(passwordField.getPassword());
 				try {
 					//BeanUser.currentLoginUser = UserUtil.userManager.login(phone_num, pwd);
+					BeanManager.currentLoginManager = ManagerUtil.managerManager.login(manager_name, pwd);
 				} catch (BaseException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 					return;

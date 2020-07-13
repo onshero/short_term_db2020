@@ -27,7 +27,7 @@ public interface IMerchandiseManager {
 	public List<BeanMerchandise> searchbyclassify(BeanMerchant merchant,String classify_name) throws BaseException;
 	
 	//添加商品
-	public BeanMerchandise addMerchandise(BeanMerchant merchant, BeanMerchandiseClassify classify, String name,double unit_price, double discount_unit_price, int remain) throws BaseException;
+	public BeanMerchandise addMerchandise( BeanMerchandiseClassify classify, String name,double unit_price, double discount_unit_price, int remain) throws BaseException;
 	
 	//删除商品
 	public void deleteMerchandise(BeanMerchandise merchandise) throws BaseException;

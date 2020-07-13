@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.edu.deliveryAssistant.itf.IManagerManager;
 import cn.edu.deliveryAssistant.model.BeanManager;
+import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
 import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
@@ -126,6 +127,46 @@ public class ManagerManager implements IManagerManager {
 				}
 		}
 
+	}
+
+	@Override
+	public BeanManager login(String name, String pwd) throws BaseException {
+		// TODO Auto-generated method stub
+		if(name==null||"".equals(name)) throw new BusinessException("员工姓名不能为空");
+		if(pwd==null||"".equals(pwd)) throw new BusinessException("密码不能为空");
+		BeanManager manager=new BeanManager();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT * FROM manager WHERE manager_name=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1, name);
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next()) {
+				if(!pwd.equals(rs.getString(3))) throw new BusinessException("密码错误");
+				manager.setManager_id(rs.getInt(1));
+				manager.setManager_name(name);
+				manager.setManager_password(pwd);
+			}else {
+				throw new BusinessException("员工不存在");
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally {
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+		}
+		return manager;
 	}
 
 }

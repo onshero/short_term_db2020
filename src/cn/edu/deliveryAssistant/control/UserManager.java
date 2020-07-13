@@ -96,7 +96,10 @@ public class UserManager implements IUserManager {
 			if(!rs.next()) throw new BusinessException("该手机号未被注册");
 			rs.close();
 			pst.close();
-			sql="select * from `user` where user_phone_num=?";
+			sql="select user_id,user_name,user_sex,user_password,user_phone_num,"
+					+ "user_email,user_city,registration_date,isVIP,VIP_end_date\r\n"
+					+ " from `user` \r\n"
+					+ "where user_phone_num=?";
 			pst=conn.prepareStatement(sql);
 			pst.setString(1, phone_num);
 			rs=pst.executeQuery();
@@ -182,7 +185,9 @@ public class UserManager implements IUserManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select * from `user` order by user_id asc";
+			String sql="select user_id,user_name,user_sex,user_password,user_phone_num," + 
+					" user_email,user_city,registration_date,isVIP,VIP_end_date\r\n"+
+					" from `user` order by user_id asc";
 			java.sql.Statement st=conn.createStatement();
 			java.sql.ResultSet rs=st.executeQuery(sql);
 			while(rs.next()) {

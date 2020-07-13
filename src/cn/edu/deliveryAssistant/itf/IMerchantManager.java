@@ -10,7 +10,7 @@ public interface IMerchantManager {
 	public List<BeanMerchant> loadAll() throws BaseException;
 	
 	//模糊查询,查询商家
-	public List<BeanMerchant> load(String merchant_name) throws BaseException;
+	public BeanMerchant load(String merchant_name) throws BaseException;
 	
 	//添加商家
 	public BeanMerchant addMerchant(String merchant_name) throws BaseException;

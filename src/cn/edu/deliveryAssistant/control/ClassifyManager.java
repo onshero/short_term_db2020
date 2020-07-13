@@ -89,6 +89,43 @@ public class ClassifyManager implements IClassifyManager {
 	}
 
 	@Override
+	public List<BeanMerchandiseClassify> loadAll(int merchant_id) throws BaseException {
+		// TODO Auto-generated method stub
+		List<BeanMerchandiseClassify> result=new ArrayList<BeanMerchandiseClassify>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT * FROM merchandise_classify WHERE merchant_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, merchant_id);
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				BeanMerchandiseClassify classify=new BeanMerchandiseClassify();
+				classify.setClassify_id(rs.getInt(1));
+				classify.setMerchant_id(rs.getInt(2));
+				classify.setClassify_name(rs.getString(3));
+				classify.setMerchandise_number(rs.getInt(4));
+				result.add(classify);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
+	@Override
 	public BeanMerchandiseClassify addClassify(BeanMerchant merchant, String classify_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(classify_name==null||"".equals(classify_name)) throw new BusinessException("类名不能为空");
@@ -175,4 +212,13 @@ public class ClassifyManager implements IClassifyManager {
 
 	}
 
+	public static void main(String[] args) {
+		try {
+			BeanMerchant merchant=new BeanMerchant();
+			merchant.setMerchant_id(2);
+			new ClassifyManager().addClassify(merchant, "主食/小食");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

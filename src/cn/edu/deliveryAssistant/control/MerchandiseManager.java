@@ -104,11 +104,12 @@ public class MerchandiseManager implements IMerchandiseManager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="SELECT * FROM merchandise WHERE merchant_id=? AND classify_id=?";
+			String sql="SELECT merchandise_id,classify_id,merchant_id,merchandise_name,unit_price,discount_unit_price,remain\r\n" + 
+					"	FROM merchandise WHERE merchant_id=? AND classify_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setInt(1, classify.getMerchant_id());
 			pst.setInt(2, classify.getClassify_id());
-			java.sql.ResultSet rs=pst.executeQuery(sql);
+			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next()) {
 				BeanMerchandise  merchandise=new BeanMerchandise();
 				merchandise.setMerchandise_id(rs.getInt(1));
@@ -286,7 +287,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 	}
 
 	@Override
-	public BeanMerchandise addMerchandise(BeanMerchant merchant, BeanMerchandiseClassify classify, String name,
+	public BeanMerchandise addMerchandise( BeanMerchandiseClassify classify, String name,
 			double unit_price, double discount_unit_price, int remain) throws BaseException {
 		// TODO Auto-generated method stub
 		if(name==null||"".equals(name)) throw new BusinessException("商品名不能为空");
@@ -300,7 +301,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 			String sql="SELECT merchandise_id,remain FROM merchandise\r\n" + 
 					"	WHERE merchant_id=? AND classify_id=? AND merchandise_name=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setInt(1, merchant.getMerchant_id());
+			pst.setInt(1, classify.getMerchant_id());
 			pst.setInt(2, classify.getClassify_id());
 			pst.setString(3, name);
 			java.sql.ResultSet rs=pst.executeQuery();
@@ -316,12 +317,12 @@ public class MerchandiseManager implements IMerchandiseManager {
 				pst.setDouble(2, discount_unit_price);
 				pst.setInt(3, remain);
 				pst.setInt(4, dise_id);
-				pst.setInt(5, merchant.getMerchant_id());
+				pst.setInt(5, classify.getMerchant_id());
 				pst.setInt(6, classify.getClassify_id());
 				pst.executeUpdate();
 				merchandise.setMerchandise_id(dise_id);
 				merchandise.setClassify_id(classify.getClassify_id());
-				merchandise.setMerchant_id(merchant.getMerchant_id());
+				merchandise.setMerchant_id(classify.getMerchant_id());
 				merchandise.setMercandise_name(name);
 				merchandise.setUnit_price(unit_price);
 				merchandise.setDiscount_unit_price(discount_unit_price);
@@ -332,7 +333,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 				sql="SELECT max(merchandise_id) FROM merchandise\r\n" + 
 						"	WHERE merchant_id=? AND classify_id=?";
 				pst=conn.prepareStatement(sql);
-				pst.setInt(1, merchant.getMerchant_id());
+				pst.setInt(1, classify.getMerchant_id());
 				pst.setInt(2, classify.getClassify_id());
 				rs=pst.executeQuery();
 				int dise_id=0;
@@ -341,9 +342,10 @@ public class MerchandiseManager implements IMerchandiseManager {
 				rs.close();
 				pst.close();
 				sql="INSERT INTO merchandise VALUES(?,?,?,?,?,?,?)";
+				pst=conn.prepareStatement(sql);
 				pst.setInt(1, dise_id);
 				pst.setInt(2, classify.getClassify_id());
-				pst.setInt(3, merchant.getMerchant_id());
+				pst.setInt(3, classify.getMerchant_id());
 				pst.setString(4, name);
 				pst.setDouble(5, unit_price);
 				pst.setDouble(6, discount_unit_price);
@@ -351,7 +353,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 				pst.executeUpdate();
 				merchandise.setMerchandise_id(dise_id);
 				merchandise.setClassify_id(classify.getClassify_id());
-				merchandise.setMerchant_id(merchant.getMerchant_id());
+				merchandise.setMerchant_id(classify.getMerchant_id());
 				merchandise.setMercandise_name(name);
 				merchandise.setUnit_price(unit_price);
 				merchandise.setDiscount_unit_price(discount_unit_price);
@@ -415,4 +417,14 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return null;
 	}
 
+	public static void main(String[] args) {
+		try {
+			BeanMerchandiseClassify classify=new BeanMerchandiseClassify();
+			classify.setClassify_id(1);
+			classify.setMerchant_id(1);
+			new MerchandiseManager().addMerchandise(classify, "蒜香酱油炸鸡套餐", 51.99, 2, 100);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

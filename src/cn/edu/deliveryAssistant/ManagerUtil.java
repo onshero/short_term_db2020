@@ -3,6 +3,7 @@ package cn.edu.deliveryAssistant;
 import cn.edu.deliveryAssistant.control.AddressManager;
 import cn.edu.deliveryAssistant.control.ClassifyManager;
 import cn.edu.deliveryAssistant.control.CouponManager;
+import cn.edu.deliveryAssistant.control.ManagerManager;
 import cn.edu.deliveryAssistant.control.MerchandiseManager;
 import cn.edu.deliveryAssistant.control.MerchantManager;
 import cn.edu.deliveryAssistant.control.OrderManager;
@@ -21,7 +22,7 @@ import cn.edu.deliveryAssistant.itf.IRiderManager;
 import cn.edu.deliveryAssistant.itf.IUserManager;
 
 public class ManagerUtil {
-	public static IManagerManager manager=null;
+	public static IManagerManager managerManager=new ManagerManager();
 	public static IUserManager userManager=new UserManager();
 	public static IRiderManager riderManager=new RiderManager();
 	public static IMerchantManager merchantManager=new MerchantManager();
