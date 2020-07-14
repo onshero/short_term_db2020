@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -22,16 +23,19 @@ import com.mysql.cj.util.Util;
 
 import cn.edu.deliveryAssistant.UserUtil;
 import cn.edu.deliveryAssistant.model.BeanMerchandise;
+import cn.edu.deliveryAssistant.util.BaseException;
+import cn.edu.deliveryAssistant.util.BusinessException;
+
+import javax.swing.JTextField;
 
 public class FrmAddCart extends JDialog implements ActionListener{
-	int get_num;
+	
 	private JPanel panel = new JPanel();
 	private JButton confirm = new JButton("确认");
 	private JButton cancel = new JButton("取消");
 	private JPanel panel_1 = new JPanel();
 	private JLabel num = new JLabel("数量");
-	SpinnerModel spinnerModel=new SpinnerNumberModel(1, 1, 100, 1);
-	private JSpinner addnum = new JSpinner(spinnerModel);
+	private JTextField addnum;
 	/**
 	 * Create the application.
 	 */
@@ -60,20 +64,13 @@ public class FrmAddCart extends JDialog implements ActionListener{
 		panel_1.setLayout(null);
 		
 		
-		num.setBounds(85, 81, 72, 18);
+		num.setBounds(96, 81, 72, 18);
 		panel_1.add(num);
 		
-		
-		addnum.setBounds(187, 78, 152, 24);
-		addnum.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				SpinnerModel source=(SpinnerModel)e.getSource();
-				get_num=(int)source.getValue();
-			}
-		});
+		addnum = new JTextField();
+		addnum.setBounds(172, 78, 137, 24);
 		panel_1.add(addnum);
+		addnum.setColumns(10);
 		
 		this.cancel.addActionListener(this);
 		this.confirm.addActionListener(this);
@@ -86,11 +83,16 @@ public class FrmAddCart extends JDialog implements ActionListener{
 			this.setVisible(false);
 			return;
 		}else if (e.getSource()==confirm) {
+			String num=addnum.getText();
+			//if(num==null||"".equals(num)) throw new BusinessException("数量不能为空");
+			int get_num=Integer.parseInt(num);
 			try {
+				if(get_num<=0) throw new BusinessException("数量至少为1");
 				UserUtil.orderManager.addOrder(BeanMerchandise.curmerchandise, get_num);
-				this.setVisible(false);
-			} catch (Exception e2) {
-				// TODO: handle exception
+				dispose();
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 		}
 	}

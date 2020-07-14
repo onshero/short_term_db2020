@@ -20,6 +20,7 @@ import cn.edu.deliveryAssistant.model.BeanMerchandiseClassify;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
 import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
+import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.ui.FrmModifyPwd;
 
 import java.awt.event.ActionEvent;
@@ -43,14 +44,12 @@ import javax.swing.JTable;
 public class FrmUserMain extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	
-	private BeanMerchandise curmerchandise=null;
 	List<BeanMerchant> allMerchant=null;
 	List<BeanMerchandiseClassify> allClassify=null;
 	List<BeanMerchandise> allMerchandise=null;
 	int merchant_id;
 	int classify_id;
 	int merchandise_id;
-	int addCart_num;
 	private Object listMerchant[];
 	private Object listClassify[];
 	private Object tblMerchandiseTitle[]=BeanMerchandise.titles;
@@ -58,8 +57,6 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu take_out = new JMenu("外卖");
 	private JMenuItem addCart = new JMenuItem("加入购物车");
-	private JMenuItem deleteCart = new JMenuItem("移除购物车");
-	private JMenu cart = new JMenu("购物车");
 	private JMenu order = new JMenu("订单");
 	private JMenu menu_user = new JMenu("我的");
 	private JMenuItem user_detail = new JMenuItem("个人信息");
@@ -78,8 +75,13 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	DefaultTableModel tabMerchandise=new DefaultTableModel();
 	private JTable merchandise_table = new JTable(tabMerchandise);
 	private GridBagConstraints gbc_merchandise = new GridBagConstraints();
-	
-	private FrmUserLogin dlgLogin=null;
+	private JMenu cart = new JMenu("购物车");
+	private JMenuItem intoCart = new JMenuItem("进入购物车");
+	private JMenuItem clearCart = new JMenuItem("清空购物车");
+	private JMenuItem ord_Ing = new JMenuItem("配送中");
+	private JMenuItem ord_finished = new JMenuItem("已送达");
+	private JMenuItem ord_cancel = new JMenuItem("取消");
+	private JMenuItem ord_OutofTime = new JMenuItem("超时");
 	
 	
 	private void reloadMerhcant() {
@@ -93,8 +95,6 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		for(int i=0;i<allMerchant.size();i++)
 			listMerchant[i]=allMerchant.get(i).getCell(0);
 		merchant_list.setListData(listMerchant);
-		tabMerchandise.getDataVector().clear();
-
 	}
 	private void reloadClassify(BeanMerchant merchant) {
 		try {
@@ -140,9 +140,20 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		
 		menuBar.add(take_out);
 		
-		take_out.add(deleteCart);
 		menuBar.add(cart);
+		
+		cart.add(intoCart);this.intoCart.addActionListener(this);
+		
+		cart.add(clearCart);this.clearCart.addActionListener(this);
 		menuBar.add(order);	
+		
+		order.add(ord_Ing);
+		
+		order.add(ord_OutofTime);
+		
+		order.add(ord_finished);
+		
+		order.add(ord_cancel);
 		menuBar.add(menu_user);
 		
 		this.setJMenuBar(menuBar);
@@ -170,6 +181,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 				// TODO Auto-generated method stub
 				tabMerchandise.setRowCount(0);
 				merchandise_table.repaint();
+				BeanMerchandise.curmerchandise=null;
 				merchant_id=merchant_list.getSelectedIndex();
 				FrmUserMain.this.reloadClassify(allMerchant.get(merchant_id));
 				
@@ -191,6 +203,7 @@ public class FrmUserMain extends JFrame implements ActionListener{
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
+				BeanMerchandise.curmerchandise=null;
 				classify_id=classify_list.getSelectedIndex();
 				FrmUserMain.this.reloadMerchandise(allClassify.get(classify_id));
 			}
@@ -219,8 +232,29 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==addCart) {
+			try {
+				if(BeanMerchandise.curmerchandise==null) throw new BusinessException("未选中商品");
+				new FrmAddCart(this, "加入购物车", true).setVisible(true);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, e2.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}else if (e.getSource()==this.intoCart) {
+			try {
+				new FrmCart(this, "购物车", true).setVisible(true);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, e2.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			
-			new FrmAddCart(this, "加入购物车", true).setVisible(true);
+		}else if (e.getSource()==user_detail) {
+			try {
+				UserUtil.userManager.reflash();
+				new FrmUserdetail(this, "个人信息", true).setVisible(true);
+			} catch (BaseException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}else if (e.getSource()==this.modify_password) {
 			new FrmModifyPwd(this, "修改密码", true).setVisible(true);
 		}

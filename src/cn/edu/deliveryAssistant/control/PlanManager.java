@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.print.attribute.standard.ReferenceUriSchemesSupported;
 
-import cn.edu.deliveryAssistant.itf.IPlanManager;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
 import cn.edu.deliveryAssistant.model.BeanPlan;
 import cn.edu.deliveryAssistant.util.BaseException;
@@ -16,9 +15,9 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class PlanManager implements IPlanManager {
+public class PlanManager {
 
-	@Override
+	//显示满减方案
 	public List<BeanPlan> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanPlan> result=new ArrayList<BeanPlan>();
@@ -55,7 +54,7 @@ public class PlanManager implements IPlanManager {
 		return result;
 	}
 
-	@Override
+	//显示满减方案
 	public List<BeanPlan> load(BeanMerchant merchant) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanPlan> result=new ArrayList<BeanPlan>();
@@ -93,7 +92,7 @@ public class PlanManager implements IPlanManager {
 		return result;
 	}
 
-	@Override
+	//添加方案
 	public BeanPlan addPlan(BeanMerchant merchant, double reduce_amount, double discount_amount,
 			int used_with_coupon) throws BaseException {
 		// TODO Auto-generated method stub
@@ -159,7 +158,7 @@ public class PlanManager implements IPlanManager {
 		return null;
 	}
 
-	@Override
+	//删除方案
 	public void delete(BeanMerchant merchant, BeanPlan plan) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;

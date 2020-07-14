@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IAddressManager;
 import cn.edu.deliveryAssistant.model.BeanAddress;
 import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
@@ -14,9 +13,9 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class AddressManager implements IAddressManager {
+public class AddressManager{
 
-	@Override
+	//显示地址
 	public List<BeanAddress> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanAddress> result=new ArrayList<BeanAddress>();
@@ -56,7 +55,7 @@ public class AddressManager implements IAddressManager {
 		return result;
 	}
 
-	@Override
+	//更改默认地址
 	public void modifyDefault(BeanAddress address) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
@@ -97,7 +96,7 @@ public class AddressManager implements IAddressManager {
 
 	}
 
-	@Override
+	//添加地址
 	public BeanAddress addAddress(BeanUser user, String province, String city, String area, String address,
 			String contact_person, String phone_num) throws BaseException {
 		// TODO Auto-generated method stub
@@ -163,7 +162,7 @@ public class AddressManager implements IAddressManager {
 		return a;
 	}
 
-	@Override
+	//删除地址
 	public void deleteAddress(BeanAddress address) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
@@ -203,6 +202,31 @@ public class AddressManager implements IAddressManager {
 				}
 		}
 
+	}
+
+	//用户注销删除地址
+	public void deleteAddress() throws BaseException {
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="DELETE FROM delivery_address WHERE AND user_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, BeanUser.currentLoginUser.getUser_id());
+			pst.executeUpdate();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 	}
 
 }

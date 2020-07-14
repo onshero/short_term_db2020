@@ -1,13 +1,15 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanOrder {
-	public static final String[] titles= {"数量","总价","单品优惠价格"};
+	public static final String[] titles= {"商品","数量","总价","单品优惠价格"};
+	public static BeanOrder curorder=null;
 	
 	private int order_id;
 	private int merchandise_id;
 	private int classify_id;
 	private int merchant_id;
 	private int user_id;
+	private String merchandise_name;
 	private int count;
 	private double total_price;
 	private double discount_unit_price;
@@ -42,6 +44,12 @@ public class BeanOrder {
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
+	public String getMerchandise_name() {
+		return merchandise_name;
+	}
+	public void setMerchandise_name(String merchandise_name) {
+		this.merchandise_name = merchandise_name;
+	}
 	public int getCount() {
 		return count;
 	}
@@ -62,9 +70,10 @@ public class BeanOrder {
 	}
 	
 	public String getCell(int col){
-		if(col==0) return ""+this.count;
-		else if(col==1) return ""+this.total_price;
-		else if(col==2) return ""+this.discount_unit_price;
+		if(col==0) return this.merchandise_name;
+		else if(col==1) return ""+this.count;
+		else if(col==2) return ""+this.total_price;
+		else if(col==3) return ""+this.discount_unit_price;
 		else return "";
 	}
 }

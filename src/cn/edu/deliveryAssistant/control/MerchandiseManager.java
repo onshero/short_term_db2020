@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IMerchandiseManager;
 import cn.edu.deliveryAssistant.model.BeanMerchandise;
 import cn.edu.deliveryAssistant.model.BeanMerchandiseClassify;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
@@ -16,9 +15,9 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class MerchandiseManager implements IMerchandiseManager {
+public class MerchandiseManager{
 
-	@Override
+	//显示商品
 	public List<BeanMerchandise> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchandise> result=new ArrayList<BeanMerchandise>();
@@ -57,7 +56,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return result;
 	}
 
-	@Override
+	
 	public List<BeanMerchandise> load(BeanMerchant merchant) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchandise> result=new ArrayList<BeanMerchandise>();
@@ -97,7 +96,6 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return result;
 	}
 
-	@Override
 	public List<BeanMerchandise> load(BeanMerchandiseClassify classify) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchandise> result=new ArrayList<BeanMerchandise>();
@@ -139,7 +137,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return result;
 	}
 
-	@Override
+	//查询商品
 	public BeanMerchandise search(String merchandise_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(merchandise_name==null||"".equals(merchandise_name)) throw new BusinessException("商品名不能为空");
@@ -180,7 +178,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return merchandise;
 	}
 
-	@Override
+	//查询商品
 	public List<BeanMerchandise> searchbyclassify(String classify_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(classify_name==null||"".equals(classify_name)) throw new BusinessException("类名不能为空");
@@ -232,7 +230,6 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return result;
 	}
 
-	@Override
 	public List<BeanMerchandise> searchbyclassify(BeanMerchant merchant, String classify_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(classify_name==null||"".equals(classify_name)) throw new BusinessException("类名不能为空");
@@ -286,7 +283,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return result;
 	}
 
-	@Override
+	//添加商品
 	public BeanMerchandise addMerchandise( BeanMerchandiseClassify classify, String name,
 			double unit_price, double discount_unit_price, int remain) throws BaseException {
 		// TODO Auto-generated method stub
@@ -376,7 +373,7 @@ public class MerchandiseManager implements IMerchandiseManager {
 		return merchandise;
 	}
 
-	@Override
+	//删除商品
 	public void deleteMerchandise(BeanMerchandise merchandise) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
@@ -405,13 +402,13 @@ public class MerchandiseManager implements IMerchandiseManager {
 
 	}
 
-	@Override
+	//显示评价
 	public List<MerchandiseEvaluate> loadEvaluation(BeanMerchandise merchandise) throws BaseException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	//用户评价
 	public MerchandiseEvaluate userEvaluate(MerchandiseOrder merchandiseOrder) throws BaseException {
 		// TODO Auto-generated method stub
 		return null;

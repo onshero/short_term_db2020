@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IRiderManager;
 import cn.edu.deliveryAssistant.model.BeanRider;
 import cn.edu.deliveryAssistant.model.MerchandiseEvaluate;
 import cn.edu.deliveryAssistant.model.RiderReceive;
@@ -15,9 +14,9 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class RiderManager implements IRiderManager {
+public class RiderManager{
 
-	@Override
+	//显示所有骑手
 	public List<BeanRider> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanRider> result=new ArrayList<BeanRider>();
@@ -59,7 +58,7 @@ public class RiderManager implements IRiderManager {
 //		return null;
 //	}
 
-	@Override
+	//模糊查找某骑手
 	public List<BeanRider> search(String rider_name) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanRider> result=new ArrayList<BeanRider>();
@@ -96,19 +95,19 @@ public class RiderManager implements IRiderManager {
 		return result;
 	}
 
-	@Override
+	//对骑手的评价
 	public List<String> load(BeanRider rider) throws BaseException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	//用户评价
 	public RiderReceive userEvaluate(MerchandiseEvaluate merchandiseEvaluate) throws BaseException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	//骑手接单数
 	public int countOrdre(BeanRider rider) throws BaseException {
 		// TODO Auto-generated method stub
 		int n=0;
@@ -139,7 +138,7 @@ public class RiderManager implements IRiderManager {
 		return n;
 	}
 
-	@Override
+	//骑手总得
 	public double sumMoney(BeanRider rider) throws BaseException {
 		// TODO Auto-generated method stub
 		double sum=0;
@@ -170,7 +169,7 @@ public class RiderManager implements IRiderManager {
 		return sum;
 	}
 
-	@Override
+	//添加骑手
 	public BeanRider addRider(String rider_name,String status) throws BaseException {
 		// TODO Auto-generated method stub
 		if(rider_name==null||"".equals(rider_name)) throw new BusinessException("骑手名不能为空");
@@ -225,7 +224,7 @@ public class RiderManager implements IRiderManager {
 		return rider;
 	}
 
-	@Override
+	//删除骑手
 	public void deleteRider(BeanRider rider) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;

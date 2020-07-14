@@ -6,16 +6,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IUserManager;
 import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
 import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class UserManager implements IUserManager {
+public class UserManager {
 
-	@Override
+	//注册
 	public BeanUser reg(String name, String sex, String pwd1, String pwd2, String phone_num, String email, String city)
 			throws BaseException {
 		if(name==null||"".equals(name)) throw new BusinessException("用户名不能为空");
@@ -80,7 +79,7 @@ public class UserManager implements IUserManager {
 		return null;
 	}
 
-	@Override
+	//登录
 	public BeanUser login(String phone_num, String pwd) throws BaseException {
 		// TODO Auto-generated method stub
 		if(phone_num==null||"".equals(phone_num)) throw new BusinessException("手机号不能为空");
@@ -142,7 +141,47 @@ public class UserManager implements IUserManager {
 		return user;
 	}
 
-	@Override
+	//刷新
+	public BeanUser reflash() throws BaseException{
+		Connection conn=null;
+		BeanUser user=BeanUser.currentLoginUser;
+		try {
+			conn=DBUtil.getConnection();
+			if(user.getVIP_end_date().before(new java.util.Date(System.currentTimeMillis()))&&user.getIsVIP()==true){
+				user.setIsVIP(false);
+				String sql="UPDATE `user` SET isVIP='0' WHERE user_id=?";
+				java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+				pst.setInt(1, user.getUser_id());
+				pst.executeUpdate();
+				user.setIsVIP(false);
+				pst.close();
+			}else if (user.getVIP_end_date().after(new java.util.Date(System.currentTimeMillis()))&&user.getIsVIP()==false) {
+				user.setIsVIP(true);
+				String sql="UPDATE `user` SET isVIP='1' WHERE user_id=?";
+				java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+				pst.setInt(1, user.getUser_id());
+				pst.executeUpdate();
+				user.setIsVIP(true);
+				pst.close();
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally {
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+		}
+		return BeanUser.currentLoginUser;
+	}
+	
+	//修改密码
 	public void changePwd(BeanUser user, String oldPwd, String newPwd, String newPwd2) throws BaseException {
 		// TODO Auto-generated method stub
 		if(!user.getUser_password().equals(oldPwd)) {
@@ -178,7 +217,7 @@ public class UserManager implements IUserManager {
 
 	}
 
-	@Override
+	//显示所有用户
 	public List<BeanUser> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanUser> result=new ArrayList<BeanUser>();
@@ -222,7 +261,11 @@ public class UserManager implements IUserManager {
 		return result;
 	}
 
-	@Override
+	/*
+	 * 	购买/续费会员
+	 * 	设定10元/月（一个月30天）
+	 * 	不满十元不能购买会员
+	 */
 	public BeanUser VIP(BeanUser user, double money) throws BaseException {
 		// TODO Auto-generated method stub
 		if(money<10) throw new BusinessException("低于最小购买值");
@@ -250,7 +293,7 @@ public class UserManager implements IUserManager {
 		return user;
 	}
 
-	@Override
+	//删除用户
 	public void deleteUser(BeanUser user) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;

@@ -2,6 +2,7 @@ package cn.edu.deliveryAssistant.model;
 
 public class BeanMerchant {
 	public static final String[] titles= {"商家","星级","人均消费","总销量"};
+	public static BeanMerchant curmerchant=null;
 	
 	private int merchant_id;
 	private String merchant_name;

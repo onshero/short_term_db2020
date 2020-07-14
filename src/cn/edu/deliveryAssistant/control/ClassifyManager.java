@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IClassifyManager;
 import cn.edu.deliveryAssistant.model.BeanMerchandiseClassify;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
 import cn.edu.deliveryAssistant.util.BaseException;
@@ -13,9 +12,9 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class ClassifyManager implements IClassifyManager {
+public class ClassifyManager {
 
-	@Override
+	//显示类别
 	public List<BeanMerchandiseClassify> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchandiseClassify> result=new ArrayList<BeanMerchandiseClassify>();
@@ -51,7 +50,6 @@ public class ClassifyManager implements IClassifyManager {
 		return result;
 	}
 
-	@Override
 	public List<BeanMerchandiseClassify> loadAll(BeanMerchant merchant) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchandiseClassify> result=new ArrayList<BeanMerchandiseClassify>();
@@ -88,7 +86,6 @@ public class ClassifyManager implements IClassifyManager {
 		return result;
 	}
 
-	@Override
 	public List<BeanMerchandiseClassify> loadAll(int merchant_id) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchandiseClassify> result=new ArrayList<BeanMerchandiseClassify>();
@@ -125,7 +122,7 @@ public class ClassifyManager implements IClassifyManager {
 		return result;
 	}
 	
-	@Override
+	//添加类别
 	public BeanMerchandiseClassify addClassify(BeanMerchant merchant, String classify_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(classify_name==null||"".equals(classify_name)) throw new BusinessException("类名不能为空");
@@ -175,7 +172,7 @@ public class ClassifyManager implements IClassifyManager {
 		return classify;
 	}
 
-	@Override
+	//删除类别
 	public void deleteClassify(BeanMerchant merchant, BeanMerchandiseClassify classify) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;

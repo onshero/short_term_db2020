@@ -5,16 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IMerchantManager;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
 import cn.edu.deliveryAssistant.util.BaseException;
 import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class MerchantManager implements IMerchantManager {
+public class MerchantManager{
 
-	@Override
+	//显示所以商家
 	public List<BeanMerchant> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchant> result=new ArrayList<BeanMerchant>();
@@ -51,7 +50,7 @@ public class MerchantManager implements IMerchantManager {
 		return result;
 	}
 
-	@Override
+	//根据订单显示商家
 	public BeanMerchant load(String merchant_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(merchant_name==null||"".equals(merchant_name)) throw new BusinessException("商家名不能为空");
@@ -88,7 +87,7 @@ public class MerchantManager implements IMerchantManager {
 		return merchant;
 	}
 	
-	@Override
+	//模糊查询,查询商家
 	public BeanMerchant addMerchant(String merchant_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(merchant_name==null||"".equals(merchant_name)) throw new BusinessException("商家名不能为空");
@@ -145,7 +144,7 @@ public class MerchantManager implements IMerchantManager {
 		return merchant;
 	}
 
-	@Override
+	//添加商家
 	public void deleteMerchant(BeanMerchant merchant) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
@@ -178,6 +177,49 @@ public class MerchantManager implements IMerchantManager {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+
+	//删除商家
+	public List<BeanMerchant> loadbyOrder() throws BaseException {
+		// TODO Auto-generated method stub
+		List<BeanMerchant> result=new ArrayList<BeanMerchant>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT * FROM merchant\r\n" + 
+					"WHERE merchant_id in(\r\n" + 
+					"	SELECT merchant_id FROM ord\r\n" + 
+					"	WHERE user_id='1'\r\n" + 
+					"	and order_id not in(\r\n" + 
+					"		SELECT order_id FROM merchandise_order WHERE user_id='1')\r\n" + 
+					")";
+			java.sql.Statement st=conn.createStatement();
+			java.sql.ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				BeanMerchant merchant=new BeanMerchant();
+				merchant.setMerchant_id(rs.getInt(1));
+				merchant.setMerchant_name(rs.getString(2));
+				merchant.setMerchant_star(rs.getDouble(3));
+				merchant.setConsumption_per_person(rs.getDouble(4));
+				merchant.setTotal_sale(rs.getInt(5));
+				result.add(merchant);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
 	}
 
 }

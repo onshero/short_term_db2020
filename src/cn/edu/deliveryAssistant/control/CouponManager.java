@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.ICouponManager;
 import cn.edu.deliveryAssistant.model.BeanCoupon;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
 import cn.edu.deliveryAssistant.model.BeanUser;
@@ -18,9 +17,9 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class CouponManager implements ICouponManager {
+public class CouponManager {
 
-	@Override
+	//显示优惠券
 	public List<BeanCoupon> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanCoupon> result=new ArrayList<BeanCoupon>();
@@ -58,7 +57,6 @@ public class CouponManager implements ICouponManager {
 		return result;
 	}
 
-	@Override
 	public List<BeanCoupon> load(BeanMerchant merchant) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanCoupon> result=new ArrayList<>();
@@ -97,7 +95,7 @@ public class CouponManager implements ICouponManager {
 		return result;
 	}
 
-	@Override
+	//显示用户得到的优惠券
 	public List<CouponGot> loadUserGot(BeanUser user) throws BaseException {
 		// TODO Auto-generated method stub
 		List<CouponGot> result=new ArrayList<>();
@@ -136,7 +134,7 @@ public class CouponManager implements ICouponManager {
 		return result;
 	}
 
-	@Override
+	//显示用户在该商家能用的优惠券
 	public List<CouponGot> loadUserGot(BeanUser user, BeanMerchant merchant) throws BaseException {
 		// TODO Auto-generated method stub
 		List<CouponGot> result=new ArrayList<>();
@@ -176,7 +174,7 @@ public class CouponManager implements ICouponManager {
 		return result;
 	}
 	
-	@Override
+	//显示用户正在集单的优惠券
 	public List<CouponReqOrder> loadUserGting(BeanUser user) throws BaseException {
 		// TODO Auto-generated method stub
 		List<CouponReqOrder> result=new ArrayList<>();
@@ -214,7 +212,7 @@ public class CouponManager implements ICouponManager {
 		return result;
 	}
 
-	@Override
+	//添加优惠券
 	public BeanCoupon addCoupon(BeanMerchant merchant, double discount_amount, int order_req_num, Date start_date,
 			Date end_date) throws BaseException {
 		// TODO Auto-generated method stub
@@ -283,7 +281,6 @@ public class CouponManager implements ICouponManager {
 		return coupon;
 	}
 
-	@Override
 	public CouponGot addUserGot(BeanUser user, BeanCoupon coupon) throws BaseException {
 		// TODO Auto-generated method stub
 		CouponGot cGot=new CouponGot();
@@ -346,20 +343,19 @@ public class CouponManager implements ICouponManager {
 		return cGot;
 	}
 
-	@Override
 	public CouponGot addUserGot(CouponReqOrder couponReqOrder) throws BaseException {
 		// TODO Auto-generated method stub
 		
 		return null;
 	}
 
-	@Override
+	//添加/修改/删除集单送券
 	public CouponReqOrder amdCouReqOrd(BeanMerchant merchant, BeanUser user) throws BaseException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	//删除优惠券
 	public void deleteCoupon(BeanMerchant merchant, BeanCoupon coupon) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
@@ -386,7 +382,7 @@ public class CouponManager implements ICouponManager {
 		}
 	}
 
-	@Override
+
 	public void deleteCoupon(CouponGot cGot,int num) throws BaseException {
 		// TODO Auto-generated method stub
 		if(num<=0) throw new BusinessException("删除数要大于0");

@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IManagerManager;
 import cn.edu.deliveryAssistant.model.BeanManager;
 import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
@@ -13,9 +12,9 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class ManagerManager implements IManagerManager {
+public class ManagerManager{
 
-	@Override
+	//显示管理员
 	public List<BeanManager> loadAll() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanManager> result=new ArrayList<BeanManager>();
@@ -50,7 +49,7 @@ public class ManagerManager implements IManagerManager {
 		return result;
 	}
 
-	@Override
+	//添加管理员
 	public BeanManager addManager(String name, String password) throws BaseException {
 		// TODO Auto-generated method stub
 		if(name==null||"".equals(name)) throw new BusinessException("管理员姓名不能为空");
@@ -102,7 +101,7 @@ public class ManagerManager implements IManagerManager {
 		return manager;
 	}
 
-	@Override
+	//删除管理员
 	public void deleteManager(BeanManager manager) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
@@ -129,7 +128,7 @@ public class ManagerManager implements IManagerManager {
 
 	}
 
-	@Override
+	//登录
 	public BeanManager login(String name, String pwd) throws BaseException {
 		// TODO Auto-generated method stub
 		if(name==null||"".equals(name)) throw new BusinessException("员工姓名不能为空");

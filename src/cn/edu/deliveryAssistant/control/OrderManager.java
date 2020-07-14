@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.deliveryAssistant.itf.IOrderManager;
 import cn.edu.deliveryAssistant.model.BeanMerchandise;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
 import cn.edu.deliveryAssistant.model.BeanOrder;
@@ -18,11 +17,10 @@ import cn.edu.deliveryAssistant.util.BusinessException;
 import cn.edu.deliveryAssistant.util.DBUtil;
 import cn.edu.deliveryAssistant.util.DbException;
 
-public class OrderManager implements IOrderManager {
+public class OrderManager{
 
-	@Override
+	//显示订单
 	public List<BeanOrder> loadAll() throws BaseException {
-		// TODO Auto-generated method stub
 		List<BeanOrder> result=new ArrayList<BeanOrder>();
 		Connection conn=null;
 		try {
@@ -61,7 +59,6 @@ public class OrderManager implements IOrderManager {
 		return result;
 	}
 
-	@Override
 	public List<MerchandiseOrder> load(BeanUser user) throws BaseException {
 		// TODO Auto-generated method stub
 		List<MerchandiseOrder> result=new ArrayList<>();
@@ -107,7 +104,6 @@ public class OrderManager implements IOrderManager {
 		return result;
 	}
 
-	@Override
 	public List<BeanOrder> load(MerchandiseOrder merchandiseOrder) throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanOrder> result=new ArrayList<BeanOrder>();
@@ -149,7 +145,7 @@ public class OrderManager implements IOrderManager {
 		return result;
 	}
 
-	@Override
+	//根据订单状态显示订单
 	public List<MerchandiseOrder> load(BeanUser user, String status) throws BaseException {
 		// TODO Auto-generated method stub
 		List<MerchandiseOrder> result=new ArrayList<>();
@@ -196,7 +192,7 @@ public class OrderManager implements IOrderManager {
 		return result;
 	}
 
-	@Override
+	//添加订单
 	public BeanOrder addOrder(BeanMerchandise merchandise, int num)
 			throws BaseException {
 		// TODO Auto-generated method stub
@@ -268,14 +264,13 @@ public class OrderManager implements IOrderManager {
 		return order;
 	}
 
-	@Override
 	public MerchandiseOrder addtotalOrder(BeanUser user, BeanMerchant merchant, BeanRider rider, BeanOrder order)
 			throws BaseException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	//修改订单状态
 	public MerchandiseOrder modifyOrderStatus(MerchandiseOrder merchandiseOrder, String status) throws BaseException {
 		// TODO Auto-generated method stub
 		if(status==null||"".equals(status)) throw new BusinessException("状态不能为空");
@@ -305,7 +300,7 @@ public class OrderManager implements IOrderManager {
 		return merchandiseOrder;
 	}
 
-	@Override
+	//删除订单
 	public void deleteOrder(BeanOrder order) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
@@ -331,6 +326,66 @@ public class OrderManager implements IOrderManager {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+		}
+
+	}
+
+	//根据商家和用户查购物车订单
+	public List<BeanOrder> loadbyMerchant(BeanMerchant merchant) throws BaseException {
+		// TODO Auto-generated method stub
+		List<BeanOrder> result=new ArrayList<BeanOrder>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT order_id,ord.merchandise_id,ord.classify_id,ord.merchant_id,ord.user_id,merchandise.merchandise_name,count,total_price,ord.discount_unit_price\r\n" + 
+					"	FROM ord, merchandise\r\n" + 
+					"	WHERE ord.merchandise_id=merchandise.merchandise_id\r\n" + 
+					"	AND ord.merchant_id=?\r\n" + 
+					"	AND user_id=?\r\n" + 
+					"	AND order_id not in(\r\n" + 
+					"		SELECT order_id FROM merchandise_order WHERE user_id=?)";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, merchant.getMerchant_id());
+			pst.setInt(2, BeanUser.currentLoginUser.getUser_id());
+			pst.setInt(3, BeanUser.currentLoginUser.getUser_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				BeanOrder order=new BeanOrder();
+				order.setOrder_id(rs.getInt(1));
+				order.setMerchandise_id(rs.getInt(2));
+				order.setClassify_id(rs.getInt(3));
+				order.setMerchant_id(rs.getInt(4));
+				order.setUser_id(rs.getInt(5));
+				order.setMerchandise_name(rs.getString(6));
+				order.setCount(rs.getInt(7));
+				order.setTotal_price(rs.getDouble(8));
+				order.setDiscount_unit_price(rs.getDouble(9));
+				result.add(order);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try {
+			
+			//new OrderManager().loadbyMerchant(merchant);
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 
 	}
