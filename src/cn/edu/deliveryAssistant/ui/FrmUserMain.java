@@ -78,10 +78,10 @@ public class FrmUserMain extends JFrame implements ActionListener{
 	private JMenu cart = new JMenu("购物车");
 	private JMenuItem intoCart = new JMenuItem("进入购物车");
 	private JMenuItem clearCart = new JMenuItem("清空购物车");
-	private JMenuItem ord_Ing = new JMenuItem("配送中");
-	private JMenuItem ord_finished = new JMenuItem("已送达");
-	private JMenuItem ord_cancel = new JMenuItem("取消");
-	private JMenuItem ord_OutofTime = new JMenuItem("超时");
+	private JMenuItem search = new JMenuItem("查询");
+	private final JMenu more = new JMenu("更多");
+	private final JMenuItem logoff = new JMenuItem("注销");
+	private final JMenuItem buyVip = new JMenuItem("续费VIP");
 	
 	
 	private void reloadMerhcant() {
@@ -145,18 +145,19 @@ public class FrmUserMain extends JFrame implements ActionListener{
 		cart.add(intoCart);this.intoCart.addActionListener(this);
 		
 		cart.add(clearCart);this.clearCart.addActionListener(this);
-		menuBar.add(order);	
+		menuBar.add(order);	this.order.addActionListener(this);
 		
-		order.add(ord_Ing);
+		order.add(search);this.search.addActionListener(this);
 		
-		order.add(ord_OutofTime);
-		
-		order.add(ord_finished);
-		
-		order.add(ord_cancel);
 		menuBar.add(menu_user);
 		
+		menu_user.add(buyVip);this.buyVip.addActionListener(this);
+		
 		this.setJMenuBar(menuBar);
+		
+		menuBar.add(more);
+		
+		more.add(logoff);this.logoff.addActionListener(this);
 		
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0};
@@ -239,6 +240,13 @@ public class FrmUserMain extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, e2.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+		}else if (e.getSource()==clearCart) {
+			try {
+				UserUtil.orderManager.deleteOrder(BeanUser.currentLoginUser);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, e2.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}else if (e.getSource()==this.intoCart) {
 			try {
 				new FrmCart(this, "购物车", true).setVisible(true);
@@ -247,6 +255,8 @@ public class FrmUserMain extends JFrame implements ActionListener{
 				return;
 			}
 			
+		}else if(e.getSource()==search){
+			new Frmordersitu(this, "订单查询", true).setVisible(true);
 		}else if (e.getSource()==user_detail) {
 			try {
 				UserUtil.userManager.reflash();
@@ -255,8 +265,19 @@ public class FrmUserMain extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+		}else if (e.getSource()==address) {
+			new FrmUseraddress(this, "我的地址",true).setVisible(true);
+		}else if (e.getSource()==coupon) {
+			new FrmUserCoupon(this, "我的优惠券", true).setVisible(true);
 		}else if (e.getSource()==this.modify_password) {
 			new FrmModifyPwd(this, "修改密码", true).setVisible(true);
+		}else if (e.getSource()==logoff) {
+			try {
+				UserUtil.userManager.deleteUser(BeanUser.currentLoginUser);
+			} catch (BaseException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 	}
 }

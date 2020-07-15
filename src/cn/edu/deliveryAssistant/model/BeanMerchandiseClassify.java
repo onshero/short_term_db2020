@@ -2,6 +2,7 @@ package cn.edu.deliveryAssistant.model;
 
 public class BeanMerchandiseClassify {
 	public static final String[] titles= {"类名","商品数"};
+	public static BeanMerchandiseClassify curclassify=null;
 	
 	private int classify_id;
 	private int merchant_id;

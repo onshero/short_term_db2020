@@ -50,7 +50,7 @@ public class MerchantManager{
 		return result;
 	}
 
-	//根据订单显示商家
+	
 	public BeanMerchant load(String merchant_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(merchant_name==null||"".equals(merchant_name)) throw new BusinessException("商家名不能为空");
@@ -87,7 +87,7 @@ public class MerchantManager{
 		return merchant;
 	}
 	
-	//模糊查询,查询商家
+	//添加商家
 	public BeanMerchant addMerchant(String merchant_name) throws BaseException {
 		// TODO Auto-generated method stub
 		if(merchant_name==null||"".equals(merchant_name)) throw new BusinessException("商家名不能为空");
@@ -144,14 +144,22 @@ public class MerchantManager{
 		return merchant;
 	}
 
-	//添加商家
+	//删除商家
 	public void deleteMerchant(BeanMerchant merchant) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="DELETE FROM merchant WHERE merchant_id=?";
+			String sql="SELECT * FROM merchandise_classify WHERE merchant_id=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, merchant.getMerchant_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next()) throw new BusinessException("存在相关类别，无法删除");
+			rs.close();
+			pst.close();
+			
+			sql="DELETE FROM merchant WHERE merchant_id=?";
+			pst=conn.prepareStatement(sql);
 			pst.setInt(1, merchant.getMerchant_id());
 			int f=pst.executeUpdate();
 			if(f==0) throw new BusinessException("删除失败");
@@ -179,7 +187,7 @@ public class MerchantManager{
 		}
 	}
 
-	//删除商家
+	//根据订单显示商家
 	public List<BeanMerchant> loadbyOrder() throws BaseException {
 		// TODO Auto-generated method stub
 		List<BeanMerchant> result=new ArrayList<BeanMerchant>();

@@ -1,6 +1,7 @@
 package cn.edu.deliveryAssistant.model;
 
 public class BeanManager {
+	public static String[] title= {"ĞòºÅ","ĞÕÃû"};
 	public static BeanManager currentLoginManager=null;
 	private int manager_id;
 	private String manager_name;
@@ -23,5 +24,9 @@ public class BeanManager {
 	public void setManager_password(String manager_password) {
 		this.manager_password = manager_password;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return ""+this.manager_id;
+		else if(col==1) return this.manager_name;
+		else return "";
+	}
 }

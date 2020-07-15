@@ -70,6 +70,8 @@ public class FrmManagerLogin extends JFrame{
 				try {
 					//BeanUser.currentLoginUser = UserUtil.userManager.login(phone_num, pwd);
 					BeanManager.currentLoginManager = ManagerUtil.managerManager.login(manager_name, pwd);
+					dispose();
+					new FrmManagerMain().setVisible(true);
 				} catch (BaseException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 					return;

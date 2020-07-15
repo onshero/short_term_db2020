@@ -70,11 +70,13 @@ public class AddressManager{
 			if(f==0) throw new BusinessException("ÐÞ¸ÄÊ§°Ü");
 			pst.close();
 			sql="select address_id from delivery_address where user_id=? and used='1' ";
+			pst=conn.prepareStatement(sql);
 			pst.setInt(1, BeanUser.currentLoginUser.getUser_id());
 			java.sql.ResultSet rs=pst.executeQuery();
-			java.sql.Statement st=conn.createStatement();
+			
 			while(rs.next()) {
 				sql="UPDATE delivery_address SET used='0' WHERE user_id='"+BeanUser.currentLoginUser.getUser_id()+"' AND address_id="+rs.getInt(1);
+				java.sql.Statement st=conn.createStatement();
 				st.executeUpdate(sql);
 				st.close();
 			}

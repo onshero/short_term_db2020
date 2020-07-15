@@ -52,11 +52,40 @@ public class RiderManager{
 		return result;
 	}
 
-//	@Override
-//	public BeanRider search(BeanRider rider) throws BaseException {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	//抽取一位骑手
+	public BeanRider loadRandom() throws BaseException {
+		// TODO Auto-generated method stub
+		BeanRider rider =new BeanRider();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT * FROM rider WHERE rider_id NOT in(\r\n" + 
+					"SELECT rider_id FROM merchandise_order WHERE merchandise_order.order_status='配送中')";
+			java.sql.Statement st=conn.createStatement();
+			java.sql.ResultSet rs=st.executeQuery(sql);
+			if(rs.next()) {
+				rider.setRider_id(rs.getInt(1));
+				rider.setRider_name(rs.getString(2));
+				rider.setDate_on_board(rs.getDate(3));
+				rider.setRider_status(rs.getString(4));
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return rider;
+	}
 
 	//模糊查找某骑手
 	public List<BeanRider> search(String rider_name) throws BaseException {
@@ -96,9 +125,34 @@ public class RiderManager{
 	}
 
 	//对骑手的评价
-	public List<String> load(BeanRider rider) throws BaseException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> loadEva(BeanRider rider) throws BaseException {
+		List<String> result=new ArrayList<>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT user_evaluate FROM rider_receive WHERE rider_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, rider.getRider_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next()) {
+				result.add(rs.getString(1));
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
 	}
 
 	//用户评价
@@ -107,21 +161,31 @@ public class RiderManager{
 		return null;
 	}
 
-	//骑手接单数
-	public int countOrdre(BeanRider rider) throws BaseException {
+	//骑手接单数和总得
+	public List<BeanRider> countOrdre() throws BaseException {
 		// TODO Auto-generated method stub
-		int n=0;
+		List<BeanRider> result=new ArrayList<>();
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="SELECT count(*) FROM merchandise_order WHERE rider_id=?";
-			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setInt(1, rider.getRider_id());
-			java.sql.ResultSet rs=pst.executeQuery();
-			rs.next();
-			n=rs.getInt(1);
+			String sql="SELECT rider.rider_id,rider_name,date_on_board,rider_status,COUNT(*),sum(rider_receive.Single_income)\r\n" + 
+					"FROM ((rider LEFT JOIN merchandise_order ON rider.rider_id=merchandise_order.rider_id) LEFT JOIN rider_receive ON rider.rider_id=rider_receive.rider_id)\r\n" + 
+					"GROUP BY rider.rider_id";
+			java.sql.Statement st=conn.createStatement();
+			//pst.setInt(1, rider.getRider_id());
+			java.sql.ResultSet rs=st.executeQuery(sql);
+			while(rs.next()) {
+				BeanRider rider=new BeanRider();
+				rider.setRider_id(rs.getInt(1));
+				rider.setRider_name(rs.getString(2));
+				rider.setDate_on_board(rs.getDate(3));
+				rider.setRider_status(rs.getString(4));
+				rider.setOrder_num(rs.getInt(5));
+				rider.setSum_income(rs.getDouble(6));
+				result.add(rider);
+			}
 			rs.close();
-			pst.close();
+			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DbException(e);
@@ -135,38 +199,7 @@ public class RiderManager{
 					e.printStackTrace();
 				}
 		}
-		return n;
-	}
-
-	//骑手总得
-	public double sumMoney(BeanRider rider) throws BaseException {
-		// TODO Auto-generated method stub
-		double sum=0;
-		Connection conn=null;
-		try {
-			conn=DBUtil.getConnection();
-			String sql="SELECT sum(Single_income) FROM rider_receive WHERE rider_id=?";
-			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setInt(1, rider.getRider_id());
-			java.sql.ResultSet rs=pst.executeQuery();
-			rs.next();
-			sum=rs.getDouble(1);
-			rs.close();
-			pst.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DbException(e);
-		}
-		finally{
-			if(conn!=null)
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-		return sum;
+		return result;
 	}
 
 	//添加骑手

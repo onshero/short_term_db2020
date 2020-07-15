@@ -3,11 +3,10 @@ package cn.edu.deliveryAssistant.model;
 import java.sql.Date;
 
 public class MerchandiseOrder {
-	public static final String[] titles= {"原始金额","结算金额","下单时间","送达时间","订单状态"};
+	public static final String[] titles= {"订单序号","商家序号","骑手序号","满减序号","优惠券序号","地址序号","原始金额","结算金额","下单时间","送达时间","订单状态"};
 	
 	private int order_id;
 	private int merchant_id;
-	private int merchandise_id;
 	private int user_id;
 	private int rider_id;
 	private int plan_id;
@@ -29,12 +28,6 @@ public class MerchandiseOrder {
 	}
 	public void setMerchant_id(int merchant_id) {
 		this.merchant_id = merchant_id;
-	}
-	public int getMerchandise_id() {
-		return merchandise_id;
-	}
-	public void setMerchandise_id(int merchandise_id) {
-		this.merchandise_id = merchandise_id;
 	}
 	public int getUser_id() {
 		return user_id;
@@ -98,11 +91,17 @@ public class MerchandiseOrder {
 	}
 	
 	public String getCell(int col){
-		if(col==0) return ""+this.origin_price;
-		else if(col==1) return ""+this.final_price;
-		else if(col==2) return this.order_date.toString();
-		else if(col==3) return ""+this.req_delivery_date.toString();
-		else if(col==4) return this.order_status;
+		if(col==0) return ""+this.order_id;
+		else if(col==1) return ""+this.merchant_id;
+		else if(col==2) return ""+this.rider_id;
+		else if(col==3) return ""+this.plan_id;
+		else if(col==4) return ""+this.coupon_id;
+		else if(col==5) return ""+this.address_id;
+		else if(col==6) return ""+this.origin_price;
+		else if(col==7) return ""+this.final_price;
+		else if(col==8) return this.order_date.toString();
+		else if(col==9) return ""+this.req_delivery_date.toString();
+		else if(col==10) return this.order_status;
 		else return "";
 	}
 

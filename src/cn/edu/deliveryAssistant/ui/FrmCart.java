@@ -25,6 +25,8 @@ import cn.edu.deliveryAssistant.model.BeanMerchandise;
 import cn.edu.deliveryAssistant.model.BeanMerchandiseClassify;
 import cn.edu.deliveryAssistant.model.BeanMerchant;
 import cn.edu.deliveryAssistant.model.BeanOrder;
+import cn.edu.deliveryAssistant.model.BeanRider;
+import cn.edu.deliveryAssistant.model.BeanUser;
 import cn.edu.deliveryAssistant.util.BaseException;
 import cn.edu.deliveryAssistant.util.BusinessException;
 
@@ -129,7 +131,7 @@ public class FrmCart extends JDialog implements ActionListener {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
-				curorder=null;
+				BeanOrder.curorder=null;
 				merchant_id=merchant_list.getSelectedIndex();
 				curmerchant=allMerchant.get(merchant_id);
 				FrmCart.this.reloadMerchandise(allMerchant.get(merchant_id));
@@ -154,7 +156,6 @@ public class FrmCart extends JDialog implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
 				merchandise_id=merchandise_table.getSelectedRow();
-				curorder=allMerchandise.get(merchandise_id);
 				BeanOrder.curorder=allMerchandise.get(merchandise_id);
 			}
 		});
@@ -169,11 +170,25 @@ public class FrmCart extends JDialog implements ActionListener {
 		if(e.getSource()==del_merchant) {
 			
 		}else if (e.getSource()==btnOK) {
-			
+			int i=merchant_list.getSelectedIndex();
+			if(i<0) {
+				JOptionPane.showMessageDialog(null, "请选择商家", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			try {
+				BeanMerchant merchant =allMerchant.get(i);
+				BeanOrder order=UserUtil.orderManager.loadbymerchant(merchant);
+				BeanRider rider=UserUtil.riderManager.loadRandom();
+				UserUtil.orderManager.addtotalOrder(BeanUser.currentLoginUser, merchant, rider, order);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, e2.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			this.reloadMerhcant();
 		}else if (e.getSource()==del_merchandise) {
 			try {
-				if(curorder==null) throw new BusinessException("未选中商品");
-				UserUtil.orderManager.deleteOrder(curorder);
+				if(BeanOrder.curorder==null) throw new BusinessException("未选中商品");
+				UserUtil.orderManager.deleteOrder(BeanOrder.curorder);
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(null, e2.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 				return;

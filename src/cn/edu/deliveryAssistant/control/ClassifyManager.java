@@ -173,7 +173,7 @@ public class ClassifyManager {
 	}
 
 	//É¾³ýÀà±ð
-	public void deleteClassify(BeanMerchant merchant, BeanMerchandiseClassify classify) throws BaseException {
+	public void deleteClassify(BeanMerchandiseClassify classify) throws BaseException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
 		try {

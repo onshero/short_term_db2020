@@ -167,5 +167,41 @@ public class ManagerManager{
 		}
 		return manager;
 	}
+	
+	//更改密码
+	public void changePwd(BeanManager manager, String oldPwd, String newPwd, String newPwd2) throws BaseException {
+		// TODO Auto-generated method stub
+		if(!manager.getManager_password().equals(oldPwd)) {
+			throw new BusinessException("原密码错误");
+		}
+		if(!newPwd.equals(newPwd2)) {
+			throw new BusinessException("新密码不一致");
+		}
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="UPDATE manager SET manager_password=? WHERE manager_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1, newPwd);
+			pst.setInt(2, manager.getManager_id());
+			int f=pst.executeUpdate();
+			if(f==0) throw new BusinessException("修改失败");
+			manager.setManager_password(newPwd);
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+
+	}
 
 }

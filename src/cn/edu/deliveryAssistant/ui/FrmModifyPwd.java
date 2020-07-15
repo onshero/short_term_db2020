@@ -26,6 +26,7 @@ import java.awt.Button;
 
 public class FrmModifyPwd extends JDialog implements ActionListener{
 
+	int t=0;
 	private JPanel toolBar = new JPanel();
 	private JPanel workPane = new JPanel();
 	private Button btnOk = new Button("确定");
@@ -42,6 +43,8 @@ public class FrmModifyPwd extends JDialog implements ActionListener{
 	 */
 	public FrmModifyPwd(Frame f, String s, boolean b) {
 		super(f, s, b);
+		if(s.equals("更改密码")) t=1;
+		else if(s.equals("修改密码")) t=2;
 		setBounds(100, 100, 450, 300);
 
 		this.setLocation(500,300);
@@ -74,7 +77,10 @@ public class FrmModifyPwd extends JDialog implements ActionListener{
 			this.setVisible(false);
 		else if(e.getSource()==this.btnOk){
 			try {
-				UserUtil.userManager.changePwd(BeanUser.currentLoginUser, new String(edtPwdOld.getPassword()), new String(edtPwd.getPassword()), new String(edtPwd2.getPassword()));
+				if(t==2)
+					UserUtil.userManager.changePwd(BeanUser.currentLoginUser, new String(edtPwdOld.getPassword()), new String(edtPwd.getPassword()), new String(edtPwd2.getPassword()));
+				else if(t==1)
+					ManagerUtil.managerManager.changePwd(BeanManager.currentLoginManager,new String(edtPwdOld.getPassword()), new String(edtPwd.getPassword()), new String(edtPwd2.getPassword()));
 				dispose();
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);

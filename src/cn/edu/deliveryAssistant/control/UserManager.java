@@ -304,6 +304,12 @@ public class UserManager {
 			pst.setInt(1, user.getUser_id());
 			pst.executeUpdate();
 			pst.close();
+			
+			sql="delete from delivery_address where user_id=?";
+			pst=conn.prepareStatement(sql);
+			pst.setInt(1, user.getUser_id());
+			pst.executeUpdate();
+			pst.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DbException(e);
@@ -319,7 +325,92 @@ public class UserManager {
 		}
 
 	}
-
+	//单数
+	public int ordercount() throws BaseException{
+		int n=0;
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT count(*) FROM merchandise_order WHERE user_id=? AND order_status='finished'";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, BeanUser.currentLoginUser.getUser_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next()) n=rs.getInt(1);
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return n;
+	}
+	//总花费
+	public double spend() throws BaseException{
+		double sum=0;
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT sum(final_price) FROM merchandise_order WHERE user_id=? AND order_status='finished'";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, BeanUser.currentLoginUser.getUser_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next()) sum=rs.getDouble(1);
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return sum;
+	}
+	
+	//总优惠
+	public double save() throws BaseException{
+		double save=0;
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="SELECT sum(origin_price-final_price) FROM merchandise_order WHERE user_id=? AND order_status='finished'";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, BeanUser.currentLoginUser.getUser_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next()) save=rs.getDouble(1);
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return save;
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {

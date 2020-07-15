@@ -3,12 +3,18 @@ package cn.edu.deliveryAssistant.model;
 public class BeanMerchant {
 	public static final String[] titles= {"商家","星级","人均消费","总销量"};
 	public static BeanMerchant curmerchant=null;
-	
+	private int order_id;
 	private int merchant_id;
 	private String merchant_name;
 	private double merchant_star;
 	private double consumption_per_person;
 	private int total_sale;
+	public int getOrder_id() {
+		return order_id;
+	}
+	public void setOrder_id(int order_id) {
+		this.order_id = order_id;
+	}
 	public int getMerchant_id() {
 		return merchant_id;
 	}
